@@ -22,7 +22,9 @@ export const TestMapCom = () => {
     } else {
       return [];
     }
-  }, [list, loaded]);
+  }, [list, loaded, setLoaded]);
 
-  return loaded ? <HeatmapLayerF data={geoLocations} /> : null;
+  return geoLocations?.length ? (
+    <HeatmapLayerF data={geoLocations} options={{ radius: map.radius.value }} />
+  ) : null;
 };

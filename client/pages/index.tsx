@@ -26,12 +26,13 @@ const MapItem = () => {
   const { data, isLoading } = useQuery([], () =>
     axios.get<any[]>('/api').then(({ data }) => data),
   );
-  const { setList } = useCmMap();
+  const { setList, list } = useCmMap();
   useEffect(() => {
     if (data?.length) {
       setList(data);
     }
   }, [data, isLoading]);
+  console.log(list);
   return (
     <>
       <ToolBar />

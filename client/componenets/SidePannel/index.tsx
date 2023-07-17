@@ -5,7 +5,7 @@ export const SidePannel = () => {
   const { list } = useCmMap();
   return (
     <div className={styles.sidePannel}>
-      選択中のデータ {(list?.length && `(${list.length}件)`) || ''}
+      <h4>選択中のデータ {(list?.length && `(${list.length}件)`) || ''}</h4>
       {list.map((item, index) => (
         <SingleData key={index} data={item} />
       ))}
@@ -15,13 +15,17 @@ export const SidePannel = () => {
 
 const SingleData: FC<{ data: Remaining }> = ({ data }) => {
   const { setCenter } = useCmMap();
-  const { addr, count, latLng } = data;
+  const { address, count, latLng, name } = data;
   return (
     <div
       onClick={() => latLng && setCenter(latLng)}
       className={styles.singleRow}
     >
-      {addr} {count}名
+      <h4>
+        {name}
+        {count > 1 && `(${count})`}
+      </h4>
+      <p>{address}</p>
     </div>
   );
 };

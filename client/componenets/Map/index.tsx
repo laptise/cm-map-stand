@@ -26,26 +26,28 @@ export const Map = () => {
 
   const map = useGoogleMap();
 
-  const geoLocations = useMemo(() => {
-    return list.map((pool) => {
-      pool.latLng = { lat: pool.latLng.lat, lng: pool.latLng.lng };
-      return {
-        location: new google.maps.LatLng(pool.latLng.lat, pool.latLng.lng),
-        weight: 1 * weight.value,
-      };
-    });
+  const heatmapList = useMemo(() => {
+    return (
+      list.map((pool) => {
+        pool.latLng = { lat: pool.latLng.lat, lng: pool.latLng.lng };
+        return {
+          location: new google.maps.LatLng(pool.latLng.lat, pool.latLng.lng),
+          weight: 1 * weight.value,
+        };
+      }) || []
+    );
   }, [list]);
   const layer = useRef(new window.google.maps.visualization.HeatmapLayer());
   useEffect(() => {
-    const geo = geoLocations || [];
-    const vs = layer.current;
-    vs.setOptions({ radius: radius.value });
-    vs.setData(geo);
-    const currentMap = vs.getMap();
-    if (!currentMap) {
-      vs.setMap(map);
+    if (!loading) {
+      const vs = layer.current;
+      vs.setOptions({ radius: radius.value });
+      vs.setData(heatmapList);
+      if (!vs.getMap()) {
+        vs.setMap(map);
+      }
     }
-  }, [geoLocations, radius, setLoading]);
+  }, [heatmapList, radius, setLoading, loading]);
 
   return <></>;
 };

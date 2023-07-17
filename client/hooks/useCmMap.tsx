@@ -15,8 +15,9 @@ type State = {
 
 export type Remaining = {
   latLng: { lat: number; lng: number };
-  addr: string;
+  address: string;
   count: number;
+  name: string;
 };
 
 type Action =

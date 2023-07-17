@@ -24,5 +24,5 @@ export const TestMapCom = () => {
     }
   }, [list, loaded]);
 
-  return <HeatmapLayerF data={geoLocations} />;
+  return loaded ? <HeatmapLayerF data={geoLocations} /> : null;
 };

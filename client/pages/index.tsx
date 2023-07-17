@@ -32,18 +32,17 @@ const MapItem = () => {
       setList(data);
     }
   }, [data, isLoading]);
-  console.log(list);
   return (
     <>
       <ToolBar />
       <main className={styles.main}>
-        <MapTool />
         <div style={{ display: 'flex', width: '100%', flexDirection: 'row' }}>
           <div style={{ height: 600, width: '100%', flex: 1 }}>
             <Map />
           </div>
           <SidePannel />
         </div>
+        <MapTool />
       </main>
     </>
   );

@@ -2,3 +2,16 @@
   display: flex;
   width: 100%;
 }
+
+.dateBox {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  input {
+    flex-direction: row;
+  }
+}
+
+.datePicker {
+  gap: 5px;
+}

@@ -9,6 +9,7 @@ type State = {
   radius: number;
   weight: number;
   center: LatLng;
+  searchPeriod: null | [string, string];
 };
 
 export type Remaining = {
@@ -24,7 +25,8 @@ type Action =
     }
   | { type: 'SET_RADIUS'; value: number }
   | { type: 'SET_WEIGHT'; value: number }
-  | { type: 'SET_CENTER'; latLng: LatLng };
+  | { type: 'SET_CENTER'; latLng: LatLng }
+  | { type: 'SET_PERIOD'; period: [string, string] };
 
 type ContextType = {
   state: State;
@@ -43,6 +45,8 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, weight: action.value };
     case 'SET_CENTER':
       return { ...state, center: action.latLng };
+    case 'SET_PERIOD':
+      return { ...state, searchPeriod: action.period };
     default:
       return state;
   }
@@ -53,6 +57,7 @@ const initValue: State = {
   radius: appConfig.map.radius,
   weight: appConfig.map.weightMultiple,
   center: { lat: 35.694287, lng: 139.7939672 },
+  searchPeriod: null,
 };
 
 export const ContextProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -66,6 +71,8 @@ export const ContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
 export const useCmMap = () => {
   const { state, dispatch } = useContext(CmMapContext);
+  const setPeriod = (period: [string, string]) =>
+    dispatch({ type: 'SET_PERIOD', period });
   const setList = (list: Remaining[]) =>
     dispatch({
       type: 'SET_LIST',
@@ -81,6 +88,7 @@ export const useCmMap = () => {
     list: state.list,
     setList,
     setCenter,
+    setPeriod,
     map: {
       center: state.center,
       radius: { value: state.radius, setValue: setRadius },

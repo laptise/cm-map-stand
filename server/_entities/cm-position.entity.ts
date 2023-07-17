@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class CmPositionEntity {
@@ -8,4 +8,9 @@ export class CmPositionEntity {
   name: string;
   @Column()
   address: string;
+  @Index()
+  @Column('date')
+  date: Date;
+  @Column({ default: 1 })
+  count: number;
 }

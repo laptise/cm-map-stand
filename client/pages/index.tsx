@@ -5,6 +5,7 @@ import { SidePannel } from '../componenets/SidePannel';
 import { ToolBar } from '../componenets/ToolBar';
 import { ContextProvider } from '../hooks/useCmMap';
 import styles from './page.module.scss';
+
 export default function Home() {
   return (
     <LoadScriptNext

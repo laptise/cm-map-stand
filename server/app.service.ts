@@ -20,6 +20,7 @@ export class AppService {
         params?.from && params?.to
           ? { date: Between(params?.from, params?.to) }
           : undefined,
+      order: { date: 'DESC' },
     });
     const geoCodes = await Promise.all(
       res.map(async (item) => ({

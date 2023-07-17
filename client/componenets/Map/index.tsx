@@ -1,28 +1,15 @@
-import {
-  GoogleMap,
-  useGoogleMap,
-  HeatmapLayer,
-  HeatmapLayerF,
-} from '@react-google-maps/api';
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  useTransition,
-} from 'react';
+import { useGoogleMap } from '@react-google-maps/api';
+import { useEffect, useMemo, useRef, useTransition } from 'react';
 import { useCmMap } from '../../hooks/useCmMap';
-import { TestMapCom } from '../maps';
 
 export const Map = () => {
   const {
     loading,
     setLoading,
     list,
+    dayFilter,
     map: { center, weight, radius },
   } = useCmMap();
-  const [isPending, startTransition] = useTransition();
 
   const map = useGoogleMap();
 
@@ -32,11 +19,12 @@ export const Map = () => {
         pool.latLng = { lat: pool.latLng.lat, lng: pool.latLng.lng };
         return {
           location: new google.maps.LatLng(pool.latLng.lat, pool.latLng.lng),
-          weight: 1 * weight.value,
+          weight: (pool.count || 1) * weight.value,
         };
       }) || []
     );
-  }, [list]);
+  }, [list, weight.value]);
+
   const layer = useRef(new window.google.maps.visualization.HeatmapLayer());
   useEffect(() => {
     if (!loading) {
@@ -47,7 +35,7 @@ export const Map = () => {
         vs.setMap(map);
       }
     }
-  }, [heatmapList, radius, setLoading, loading]);
+  }, [heatmapList, radius.value, setLoading, loading]);
 
   return <></>;
 };

@@ -11,6 +11,7 @@ type State = {
   center: LatLng;
   searchPeriod: null | [string, string];
   loading: boolean;
+  dayFilter: number;
 };
 
 export type Remaining = {
@@ -18,6 +19,7 @@ export type Remaining = {
   address: string;
   count: number;
   name: string;
+  date: string;
 };
 
 type Action =
@@ -29,6 +31,7 @@ type Action =
   | { type: 'SET_WEIGHT'; value: number }
   | { type: 'SET_CENTER'; latLng: LatLng }
   | { type: 'SET_LOADING'; value: boolean }
+  | { type: 'SET_DAY_FILTER'; value: number }
   | { type: 'SET_PERIOD'; period: [string, string] };
 
 type ContextType = {
@@ -50,6 +53,8 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, center: action.latLng };
     case 'SET_LOADING':
       return { ...state, loading: action.value };
+    case 'SET_DAY_FILTER':
+      return { ...state, dayFilter: action.value };
     case 'SET_PERIOD':
       return { ...state, searchPeriod: action.period };
     default:
@@ -64,6 +69,7 @@ const initValue: State = {
   center: { lat: 35.694287, lng: 139.7939672 },
   searchPeriod: null,
   loading: true,
+  dayFilter: -1,
 };
 
 export const ContextProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -94,6 +100,10 @@ export const useCmMap = () => {
     loading: state.loading,
     list: state.list,
     period: state.searchPeriod,
+    dayFilter: {
+      value: state.dayFilter,
+      setValue: (value: number) => dispatch({ type: 'SET_DAY_FILTER', value }),
+    },
     setList,
     setCenter,
     setPeriod,

@@ -1,8 +1,5 @@
-'use client';
-
-import styles from './index.module.scss';
 import { FC, useState } from 'react';
-import { Remaining, useCmMap } from '../../hooks/useCmMap';
+import styles from './index.module.scss';
 
 export const ToolBar = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -19,9 +16,6 @@ export const ToolBar = () => {
     <>
       <nav>
         <h1>ケアマネジャーマップ</h1>
-        <button style={{ marginLeft: 'auto' }} onClick={open}>
-          データ設定
-        </button>
       </nav>
       {modalOpen && <Modal close={close} />}
     </>

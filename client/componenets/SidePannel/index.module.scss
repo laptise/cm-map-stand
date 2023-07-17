@@ -1,7 +1,12 @@
 .sidePannel {
   display: flex;
-  padding: 0 10px;
+  padding: 10px;
   min-width: 300px;
+  gap: 10px;
+}
+.pannelInner {
+  max-width: 100%;
+  overflow-y: scroll;
 }
 
 .singleRow {
@@ -11,6 +16,13 @@
   padding: 10px;
   h4 {
     font-size: 14px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    small {
+      color: #aaa;
+      font-weight: normal;
+    }
   }
   p {
     font-size: 12px;

@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 
 const containerStyle = {
   width: '100%',
-  height: '86vh',
+  height: '100%',
 };
 
 const defaultProps = {
@@ -35,7 +35,7 @@ export default function Home() {
 }
 
 const MapItem = () => {
-  const { setList, list, period, setLoading, map } = useCmMap();
+  const { setList, list, period, setLoading, map, dayFilter } = useCmMap();
   const from = period?.[0] || '';
   const to = period?.[1] || '';
   const { data, isLoading } = useQuery([from, to], () =>
@@ -48,30 +48,32 @@ const MapItem = () => {
   }, [isLoading]);
   useEffect(() => {
     if (data?.length !== undefined) {
-      setList(data);
+      setList(
+        data.filter((x) =>
+          dayFilter.value === -1
+            ? true
+            : new Date(x.date).getDay() === dayFilter.value,
+        ),
+      );
     }
-  }, [data, isLoading]);
+  }, [data, isLoading, dayFilter.value]);
   return (
     <>
       <ToolBar />
-      <main className={styles.main}>
-        <div style={{ display: 'flex', width: '100%', flexDirection: 'row' }}>
-          <div style={{ height: 600, width: '100%', flex: 1 }}>
-            <GoogleMap
-              center={map.center}
-              mapContainerStyle={containerStyle}
-              options={{ disableDefaultUI: true }}
-              zoom={16}
-              // onLoad={onLoad}
-              // onUnmount={onUnmount}
-            >
-              <Map />
-            </GoogleMap>
-          </div>
-          <SidePannel />
-        </div>
-        <MapTool />
+      <main>
+        <GoogleMap
+          center={map.center}
+          mapContainerStyle={containerStyle}
+          options={{ disableDefaultUI: true }}
+          zoom={16}
+          // onLoad={onLoad}
+          // onUnmount={onUnmount}
+        >
+          <Map />
+        </GoogleMap>
+        <SidePannel />
       </main>
+      <MapTool />
     </>
   );
 };

@@ -7,7 +7,5 @@ export const TestMapCom: FC<{
 }> = ({ geoLocations }) => {
   const { map } = useCmMap();
 
-  return geoLocations?.length ? (
-    <HeatmapLayerF data={geoLocations} options={{ radius: map.radius.value }} />
-  ) : null;
+  return geoLocations?.length ? <HeatmapLayerF data={geoLocations} /> : null;
 };

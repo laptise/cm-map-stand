@@ -1,6 +1,13 @@
 .tools {
+  position: sticky;
+  background-color: white;
+  bottom: 0;
   display: flex;
   width: 100%;
+  padding: 20px;
+  left: 0;
+  height: 200px;
+  box-sizing: border-box;
 }
 
 .dateBox {
@@ -14,4 +21,15 @@
 
 .datePicker {
   gap: 5px;
+}
+
+.days {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  span {
+    cursor: pointer;
+    width: 40px;
+    text-align: center;
+  }
 }

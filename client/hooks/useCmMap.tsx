@@ -10,6 +10,7 @@ type State = {
   weight: number;
   center: LatLng;
   searchPeriod: null | [string, string];
+  loading: boolean;
 };
 
 export type Remaining = {
@@ -26,6 +27,7 @@ type Action =
   | { type: 'SET_RADIUS'; value: number }
   | { type: 'SET_WEIGHT'; value: number }
   | { type: 'SET_CENTER'; latLng: LatLng }
+  | { type: 'SET_LOADING'; value: boolean }
   | { type: 'SET_PERIOD'; period: [string, string] };
 
 type ContextType = {
@@ -45,6 +47,8 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, weight: action.value };
     case 'SET_CENTER':
       return { ...state, center: action.latLng };
+    case 'SET_LOADING':
+      return { ...state, loading: action.value };
     case 'SET_PERIOD':
       return { ...state, searchPeriod: action.period };
     default:
@@ -58,6 +62,7 @@ const initValue: State = {
   weight: appConfig.map.weightMultiple,
   center: { lat: 35.694287, lng: 139.7939672 },
   searchPeriod: null,
+  loading: true,
 };
 
 export const ContextProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -85,11 +90,13 @@ export const useCmMap = () => {
   const setCenter = (latLng: LatLng) =>
     dispatch({ type: 'SET_CENTER', latLng });
   return {
+    loading: state.loading,
     list: state.list,
     period: state.searchPeriod,
     setList,
     setCenter,
     setPeriod,
+    setLoading: (value: boolean) => dispatch({ type: 'SET_LOADING', value }),
     map: {
       center: state.center,
       radius: { value: state.radius, setValue: setRadius },

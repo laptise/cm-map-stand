@@ -8,7 +8,6 @@ export class AppController {
 
   @Get()
   getHello(@Query() params?: SearchParams) {
-    console.log(params);
-    return this.appService.getHello();
+    return this.appService.getHello(params);
   }
 }

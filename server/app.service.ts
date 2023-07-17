@@ -1,9 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { CmPositionEntity } from './_entities/cm-position.entity';
 import { Client } from '@googlemaps/google-maps-services-js';
 import { GoogleMapsClientSybmol } from './_entities/_constants';
+import { SearchParams } from './input/search-params.input.dto';
 
 @Injectable()
 export class AppService {
@@ -13,8 +14,13 @@ export class AppService {
     @Inject(GoogleMapsClientSybmol)
     private readonly client: Client,
   ) {}
-  async getHello() {
-    const res = await this.repo.find();
+  async getHello(params?: SearchParams) {
+    const res = await this.repo.find({
+      where:
+        params?.from && params?.to
+          ? { date: Between(params?.from, params?.to) }
+          : undefined,
+    });
     const geoCodes = await Promise.all(
       res.map(async (item) => ({
         ...item,

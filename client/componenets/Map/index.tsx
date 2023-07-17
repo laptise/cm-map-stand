@@ -1,32 +1,51 @@
-import { GoogleMap } from '@react-google-maps/api';
+import {
+  GoogleMap,
+  useGoogleMap,
+  HeatmapLayer,
+  HeatmapLayerF,
+} from '@react-google-maps/api';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useTransition,
+} from 'react';
 import { useCmMap } from '../../hooks/useCmMap';
 import { TestMapCom } from '../maps';
 
-const containerStyle = {
-  width: '100%',
-  height: '86vh',
-};
-
-const defaultProps = {
-  center: {
-    lat: 35.694287,
-    lng: 139.7939672,
-  },
-  zoom: 14,
-};
-
 export const Map = () => {
   const {
-    map: { center },
+    loading,
+    setLoading,
+    list,
+    map: { center, weight, radius },
   } = useCmMap();
-  return (
-    <GoogleMap
-      center={center}
-      mapContainerStyle={containerStyle}
-      options={{ disableDefaultUI: true }}
-      zoom={16}
-    >
-      <TestMapCom />
-    </GoogleMap>
-  );
+  const [isPending, startTransition] = useTransition();
+
+  const map = useGoogleMap();
+
+  const geoLocations = useMemo(() => {
+    return list.map((pool) => {
+      pool.latLng = { lat: pool.latLng.lat, lng: pool.latLng.lng };
+      return {
+        location: new google.maps.LatLng(pool.latLng.lat, pool.latLng.lng),
+        weight: 1 * weight.value,
+      };
+    });
+  }, [list]);
+  const layer = useRef(new window.google.maps.visualization.HeatmapLayer());
+  useEffect(() => {
+    const geo = geoLocations || [];
+    const vs = layer.current;
+    vs.setOptions({ radius: radius.value });
+    vs.setData(geo);
+    const currentMap = vs.getMap();
+    if (!currentMap) {
+      vs.setMap(map);
+    }
+  }, [geoLocations, radius, setLoading]);
+
+  return <></>;
 };

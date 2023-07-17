@@ -11,10 +11,11 @@ type State = {
   center: LatLng;
 };
 
-export class Remaining {
-  public latLng?: { lat: number; lng: number };
-  constructor(public addr: string, public count: number) {}
-}
+export type Remaining = {
+  latLng: { lat: number; lng: number };
+  addr: string;
+  count: number;
+};
 
 type Action =
   | {

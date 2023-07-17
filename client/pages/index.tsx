@@ -4,10 +4,10 @@ import { MapTool } from '../componenets/MapTool';
 import { SidePannel } from '../componenets/SidePannel';
 import { ToolBar } from '../componenets/ToolBar';
 import { ContextProvider, useCmMap } from '../hooks/useCmMap';
-import styles from './page.module.scss';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useEffect } from 'react';
+import config from 'next/config';
 
 const containerStyle = {
   width: '100%',
@@ -24,7 +24,7 @@ const defaultProps = {
 export default function Home() {
   return (
     <LoadScriptNext
-      googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY || ''}
+      googleMapsApiKey={config().publicRuntimeConfig.googleApiKey}
       libraries={['visualization', 'geocoding']}
     >
       <ContextProvider>

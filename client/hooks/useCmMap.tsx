@@ -86,6 +86,7 @@ export const useCmMap = () => {
     dispatch({ type: 'SET_CENTER', latLng });
   return {
     list: state.list,
+    period: state.searchPeriod,
     setList,
     setCenter,
     setPeriod,

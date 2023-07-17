@@ -23,10 +23,12 @@ export default function Home() {
 }
 
 const MapItem = () => {
-  const { data, isLoading } = useQuery([], () =>
-    axios.get<any[]>('/api').then(({ data }) => data),
+  const { setList, list, period } = useCmMap();
+  const from = period?.[0] || '';
+  const to = period?.[1] || '';
+  const { data, isLoading } = useQuery([from, to], () =>
+    axios.get<any[]>('/api', { params: { from, to } }).then(({ data }) => data),
   );
-  const { setList, list } = useCmMap();
   useEffect(() => {
     if (data?.length) {
       setList(data);

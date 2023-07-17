@@ -1,0 +1,15 @@
+.sidePannel {
+  display: flex;
+  padding: 10px;
+  min-width: 300px;
+}
+
+.singleRow {
+  cursor: pointer;
+  background-color: rgba(244, 244, 244);
+  transition: all 100ms;
+  padding: 10px;
+  &:hover {
+    background-color: white;
+  }
+}

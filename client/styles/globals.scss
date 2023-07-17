@@ -1,0 +1,52 @@
+$c1: #3f77bf;
+$c2: #a1bf60;
+$c3: #e5f2b6;
+$c4: #d9a689;
+$c5: #f2f2f2;
+
+:root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  * {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  script {
+    display: none;
+  }
+}
+
+nav {
+  padding: 10px;
+  background-color: #3f76bf79;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex: 1;
+  box-sizing: border-box;
+  h1 {
+    color: white;
+  }
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+  }
+}
+
+main {
+  flex: 1;
+  flex-direction: column;
+  display: flex;
+}

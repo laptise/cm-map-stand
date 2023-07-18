@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, Repository } from 'typeorm';
+import { Between, IsNull, Repository } from 'typeorm';
 import { CmPositionEntity } from './_entities/cm-position.entity';
 import { Client } from '@googlemaps/google-maps-services-js';
 import { GoogleMapsClientSybmol } from './_entities/_constants';
@@ -13,7 +13,10 @@ export class AppService {
     private readonly repo: Repository<CmPositionEntity>,
     @Inject(GoogleMapsClientSybmol)
     private readonly client: Client,
-  ) {}
+  ) {
+    this.fillGeoCode();
+  }
+
   async getHello(params?: SearchParams) {
     const res = await this.repo.find({
       where:
@@ -22,13 +25,29 @@ export class AppService {
           : undefined,
       order: { date: 'DESC' },
     });
-    const geoCodes = await Promise.all(
-      res.map(async (item) => ({
-        ...item,
-        latLng: await this.geocode(item.address),
-      })),
+    return res.map(({ id, date, name, address, lat, lng, count }) => ({
+      id,
+      name,
+      address,
+      count,
+      date,
+      latLng: { lat, lng },
+    }));
+  }
+
+  async fillGeoCode() {
+    const res = await this.repo.find({
+      where: { lat: IsNull(), lng: IsNull() },
+    });
+    await Promise.all(
+      res.map(async (x) => {
+        const latlng = await this.geocode(x.address);
+        await this.repo.update(
+          { id: x.id },
+          { lat: latlng.lat, lng: latlng.lng },
+        );
+      }),
     );
-    return geoCodes;
   }
 
   async geocode(address: string) {

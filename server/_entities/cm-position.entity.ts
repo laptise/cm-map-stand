@@ -13,4 +13,8 @@ export class CmPositionEntity {
   date: Date;
   @Column({ default: 1 })
   count: number;
+  @Column('double precision', { nullable: true })
+  lat: number;
+  @Column('double precision', { nullable: true })
+  lng: number;
 }
